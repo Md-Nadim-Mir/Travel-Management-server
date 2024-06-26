@@ -36,6 +36,17 @@ async function run() {
 
     // <-----------   Users Management ------------------->
 
+
+    // <------------------  User read from database database  ------------------------->
+    app.get('/users',async(req,res)=>{
+        const cursor =  usersCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+
+    })
+
+
+    // <------------------  User create and post database  ------------------------->
     app.post('/users',async(req,res)=>{
 
         const user=req.body;
