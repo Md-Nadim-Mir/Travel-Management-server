@@ -45,6 +45,15 @@ async function run() {
 
     })
 
+    // <------------------ Single User read from database database  ------------------------->
+    app.get('/users/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query= {_id : new ObjectId(id)};
+        const result = await usersCollection.findOne(query);
+        res.send(result);
+
+    })
+
 
     // <------------------  User create and post database  ------------------------->
     app.post('/users',async(req,res)=>{
@@ -55,6 +64,28 @@ async function run() {
         res.send(result);
 
     })
+
+
+    // <------------------  User update from client site to database  ------------------------->
+
+    app.put('/users/:id',async(req,res)=>{
+       
+        const id =req.params.id;
+        const user = req.body;
+        const filter = {_id: new ObjectId(id)};
+        const option = {upsert : true};
+        const updateUser = {
+          $set:{
+            role : user.role
+          }
+        }
+        const result = await usersCollection.updateOne(filter,updateUser,option);
+        res.send(result);
+
+       
+    })
+
+
 
     // <------------------  User delete from database  ------------------------->
     app.delete('/users/:id',async(req,res)=>{
