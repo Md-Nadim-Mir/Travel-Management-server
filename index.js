@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000 ;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 // middleware
@@ -52,6 +52,17 @@ async function run() {
         const user=req.body;
         console.log(user);
         const result = await usersCollection.insertOne(user);
+        res.send(result);
+
+    })
+
+    // <------------------  User delete from database  ------------------------->
+    app.post('/users/:email',async(req,res)=>{
+
+        const email=req.params.email;
+        const query = {email : email}
+        console.log(email);
+        const result = await usersCollection.deleteOne(query);
         res.send(result);
 
     })
