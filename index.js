@@ -32,6 +32,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
 
     const usersCollection = client.db('travel-management').collection('users');
+    const placesCollection=client.db('travel-management').collection('places');
 
 
     // <-----------   Users Management ------------------->
@@ -96,6 +97,23 @@ async function run() {
         const result = await usersCollection.deleteOne(query);
         res.send(result);
 
+    })
+
+    // <-----------------------   Users Database End   -------------------------->
+
+
+
+    // <----------------------- Place Database Start -------------------------->
+
+
+    //  <---------- places : POST Method ----------->
+    app.post('/places',async(req,res)=>{
+
+         const place = req.body;
+         console.log(place);
+         const result = await placesCollection.insertOne(place);
+         res.send(result);
+       
     })
 
     await client.connect();
