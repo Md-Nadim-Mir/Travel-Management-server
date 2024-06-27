@@ -215,7 +215,7 @@ async function run() {
 
 //  <--------------------  Single Hotel : get method  -------------------->
 
-app.get('/places/:id',async (req,res)=>{
+app.get('/hotels/:id',async (req,res)=>{
 
   const id= req.params.id;
   const query = {_id : new ObjectId(id)};
@@ -236,7 +236,7 @@ app.post('/hotels',async(req,res)=>{
 })
 
 // <------------------- Hotels : UPDATE method ------------>
-app.put('/places/:id',async(req,res)=>{
+app.put('/hotels/:id',async(req,res)=>{
 
   const id =req.params.id;
   const place = req.body;
@@ -259,11 +259,11 @@ app.put('/places/:id',async(req,res)=>{
 
 
 //  <----------- Hotels : DElETE method>
-app.delete('/places/:id',async(req,res)=>{
+app.delete('/hotels/:id',async(req,res)=>{
      
     const id = req.params.id;
     const query = {_id: new ObjectId(id)};
-    const result =await placesCollection.deleteOne(query);
+    const result =await hotelsCollection.deleteOne(query);
     res.send(result);
    
 })
