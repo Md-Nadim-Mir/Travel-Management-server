@@ -106,6 +106,15 @@ async function run() {
     // <----------------------- Place Database Start -------------------------->
 
 
+    // <---------------------- Places : GET Method ---------------------->
+    app.get('/places',async(req,res)=>{
+       
+          const cursor  =  placesCollection.find();
+          const  result = await cursor.toArray();
+          res.send(result);
+       
+    })
+
     //  <---------- places : POST Method ----------->
     app.post('/places',async(req,res)=>{
 
