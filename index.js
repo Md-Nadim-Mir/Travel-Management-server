@@ -137,6 +137,28 @@ async function run() {
        
     })
 
+    // <------------------- Places : UPDATE method ------------>
+    app.put('/places/:id',async(req,res)=>{
+
+      const id =req.params.id;
+      const place = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert : true};
+      const updatePlace = {
+        $set:{
+          name : place.name,
+          image : place.image,
+          location: place.location,
+          description : place.description
+        }
+      }
+      const result = await usersCollection.updateOne(filter,updatePlace,option);
+      res.send(result);
+     
+    })
+
+   
+
     //  <----------- Places : DElETE method>
     app.delete('/places/:id',async(req,res)=>{
          
