@@ -204,9 +204,9 @@ async function run() {
 
 
     // <---------------------- Hotel : GET Method ---------------------->
-    app.get('/places',async(req,res)=>{
+    app.get('/hotels',async(req,res)=>{
        
-      const cursor  =  placesCollection.find();
+      const cursor  =  hotelsCollection.find();
       const  result = await cursor.toArray();
       res.send(result);
    
@@ -223,7 +223,7 @@ app.get('/places/:id',async (req,res)=>{
   res.send(result);
 
  })
- 
+
 
 //  <---------- Hotels : POST Method ----------->
 app.post('/hotels',async(req,res)=>{
