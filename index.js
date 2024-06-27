@@ -48,12 +48,12 @@ async function run() {
 
     // <------------------ Single User read from database database  ------------------------->
     app.get('/users/:id',async(req,res)=>{
-        const id = req.params.id;
-        const query= {_id : new ObjectId(id)};
-        const result = await usersCollection.findOne(query);
-        res.send(result);
+      const id = req.params.id;
+      const query= {_id : new ObjectId(id)};
+      const result = await usersCollection.findOne(query);
+      res.send(result);
 
-    })
+  })
 
 
     // <------------------  User create and post database  ------------------------->
@@ -114,6 +114,18 @@ async function run() {
           res.send(result);
        
     })
+
+
+    //  <--------------------  Single Places:get method  -------------------->
+   
+    app.get('/places/:id',async (req,res)=>{
+
+      const id= req.params.id;
+      const query = {_id : new ObjectId(id)};
+      const result = await placesCollection.findOne(query);
+      res.send(result);
+
+     })
 
     //  <---------- places : POST Method ----------->
     app.post('/places',async(req,res)=>{
