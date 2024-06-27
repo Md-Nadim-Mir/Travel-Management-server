@@ -31,8 +31,20 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
 
+
+
+
+
+
     const usersCollection = client.db('travel-management').collection('users');
     const placesCollection=client.db('travel-management').collection('places');
+    const hotelsCollection=client.db('travel-management').collection('hotels');
+
+
+
+
+
+
 
 
     // <-----------   Users Management ------------------->
@@ -103,6 +115,13 @@ async function run() {
 
 
 
+
+
+
+
+
+
+
     // <----------------------- Place Database Start -------------------------->
 
 
@@ -169,6 +188,100 @@ async function run() {
         res.send(result);
        
     })
+
+
+
+
+
+    // <---------------  Places  Database end ----------- > 
+
+
+
+
+
+
+    // <----------------------- Hotel Database Start -------------------------->
+
+
+    // <---------------------- Hotel : GET Method ---------------------->
+    app.get('/places',async(req,res)=>{
+       
+      const cursor  =  placesCollection.find();
+      const  result = await cursor.toArray();
+      res.send(result);
+   
+})
+
+
+//  <--------------------  Single Hotel : get method  -------------------->
+
+app.get('/places/:id',async (req,res)=>{
+
+  const id= req.params.id;
+  const query = {_id : new ObjectId(id)};
+  const result = await placesCollection.findOne(query);
+  res.send(result);
+
+ })
+ 
+
+//  <---------- Hotels : POST Method ----------->
+app.post('/hotels',async(req,res)=>{
+
+     const hotel = req.body;
+     console.log(hotel);
+     const result = await hotelsCollection.insertOne(hotel);
+     res.send(result);
+   
+})
+
+// <------------------- Hotels : UPDATE method ------------>
+app.put('/places/:id',async(req,res)=>{
+
+  const id =req.params.id;
+  const place = req.body;
+  const filter = {_id: new ObjectId(id)};
+  const option = {upsert : true};
+  const updatePlace = {
+    $set:{
+      name : place.name,
+      image : place.image,
+      location: place.location,
+      description : place.description,
+      date : place.date
+    }
+  }
+  const result = await placesCollection.updateOne(filter,updatePlace,option);
+  res.send(result);
+ 
+})
+
+
+
+//  <----------- Hotels : DElETE method>
+app.delete('/places/:id',async(req,res)=>{
+     
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result =await placesCollection.deleteOne(query);
+    res.send(result);
+   
+})
+
+
+
+// <----------------- Hotels Database end -------------------- > 
+
+
+
+
+
+
+
+
+
+
+
 
     await client.connect();
     // Send a ping to confirm a successful connection
