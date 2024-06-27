@@ -149,10 +149,11 @@ async function run() {
           name : place.name,
           image : place.image,
           location: place.location,
-          description : place.description
+          description : place.description,
+          date : place.date
         }
       }
-      const result = await usersCollection.updateOne(filter,updatePlace,option);
+      const result = await placesCollection.updateOne(filter,updatePlace,option);
       res.send(result);
      
     })
