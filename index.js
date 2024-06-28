@@ -294,14 +294,14 @@ app.delete('/hotels/:id',async(req,res)=>{
 
 //  <--------------------  Single Blog : get method  -------------------->
 
-// app.get('/blogs/:id',async (req,res)=>{
+app.get('/blogs/:id',async (req,res)=>{
 
-//   const id= req.params.id;
-//   const query = {_id : new ObjectId(id)};
-//   const result = await blogsCollection.findOne(query);
-//   res.send(result);
+  const id= req.params.id;
+  const query = {_id : new ObjectId(id)};
+  const result = await blogsCollection.findOne(query);
+  res.send(result);
 
-//  })
+ })
 
 
 //  <---------- Blogs : POST Method ----------->
@@ -315,25 +315,25 @@ app.post('/blogs',async(req,res)=>{
  })
 
 // <------------------- Blogs : UPDATE method ------------>
-// app.put('/blogs/:id',async(req,res)=>{
+app.put('/blogs/:id',async(req,res)=>{
 
-//   const id =req.params.id;
-//   const blog = req.body;
-//   const filter = {_id: new ObjectId(id)};
-//   const option = {upsert : true};
-//   const updateBlog = {
-//     $set:{
-//       name : blog.name,
-//       image : blog.image,
-//       writer: blog.writer,
-//       description : blog.description,
-//       date : blog.date
-//     }
-//   }
-//   const result = await blogsCollection.updateOne(filter,updateBlog,option);
-//   res.send(result);
+  const id =req.params.id;
+  const blog = req.body;
+  const filter = {_id: new ObjectId(id)};
+  const option = {upsert : true};
+  const updateBlog = {
+    $set:{
+      name : blog.name,
+      image : blog.image,
+      writer: blog.writer,
+      description : blog.description,
+      date : blog.date
+    }
+  }
+  const result = await blogsCollection.updateOne(filter,updateBlog,option);
+  res.send(result);
  
-// })
+})
 
 
 
