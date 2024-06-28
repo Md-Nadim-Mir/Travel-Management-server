@@ -239,19 +239,19 @@ app.post('/hotels',async(req,res)=>{
 app.put('/hotels/:id',async(req,res)=>{
 
   const id =req.params.id;
-  const place = req.body;
+  const hotel = req.body;
   const filter = {_id: new ObjectId(id)};
   const option = {upsert : true};
-  const updatePlace = {
+  const updateHotel = {
     $set:{
-      name : place.name,
-      image : place.image,
-      location: place.location,
-      description : place.description,
-      date : place.date
+      name : hotel.name,
+      image : hotel.image,
+      location: hotel.location,
+      description : hotel.description,
+      date : hotel.date
     }
   }
-  const result = await placesCollection.updateOne(filter,updatePlace,option);
+  const result = await hotelsCollection.updateOne(filter,updateHotel,option);
   res.send(result);
  
 })
