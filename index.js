@@ -39,6 +39,7 @@ async function run() {
     const usersCollection = client.db('travel-management').collection('users');
     const placesCollection=client.db('travel-management').collection('places');
     const hotelsCollection=client.db('travel-management').collection('hotels');
+    const blogsCollection=client.db('travel-management').collection('blogs');
 
 
 
@@ -274,6 +275,81 @@ app.delete('/hotels/:id',async(req,res)=>{
 
 
 
+
+
+
+
+// <----------------------- Blog Database Start -------------------------->
+
+
+    // <---------------------- Blog : GET Method ---------------------->
+    // app.get('/blogs',async(req,res)=>{
+       
+    //   const cursor  =  blogsCollection.find();
+    //   const  result = await cursor.toArray();
+    //   res.send(result);
+   
+    //  })
+
+
+//  <--------------------  Single Blog : get method  -------------------->
+
+// app.get('/blogs/:id',async (req,res)=>{
+
+//   const id= req.params.id;
+//   const query = {_id : new ObjectId(id)};
+//   const result = await blogsCollection.findOne(query);
+//   res.send(result);
+
+//  })
+
+
+//  <---------- Blogs : POST Method ----------->
+app.post('/blogs',async(req,res)=>{
+
+     const blog = req.body;
+     console.log(blog);
+     const result = await blogsCollection.insertOne(blog);
+     res.send(result);
+   
+ })
+
+// <------------------- Blogs : UPDATE method ------------>
+// app.put('/blogs/:id',async(req,res)=>{
+
+//   const id =req.params.id;
+//   const blog = req.body;
+//   const filter = {_id: new ObjectId(id)};
+//   const option = {upsert : true};
+//   const updateBlog = {
+//     $set:{
+//       name : blog.name,
+//       image : blog.image,
+//       writer: blog.writer,
+//       description : blog.description,
+//       date : blog.date
+//     }
+//   }
+//   const result = await blogsCollection.updateOne(filter,updateBlog,option);
+//   res.send(result);
+ 
+// })
+
+
+
+//  <----------- Blogs : DElETE method>
+// app.delete('/hotels/:id',async(req,res)=>{
+     
+//     const id = req.params.id;
+//     const query = {_id: new ObjectId(id)};
+//     const result =await hotelsCollection.deleteOne(query);
+//     res.send(result);
+   
+// })
+
+
+
+// <----------------- Blogs Database end -------------------- > 
 
 
 
