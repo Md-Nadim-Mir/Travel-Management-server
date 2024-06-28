@@ -338,14 +338,14 @@ app.post('/blogs',async(req,res)=>{
 
 
 //  <----------- Blogs : DElETE method>
-// app.delete('/hotels/:id',async(req,res)=>{
+app.delete('/blogs/:id',async(req,res)=>{
      
-//     const id = req.params.id;
-//     const query = {_id: new ObjectId(id)};
-//     const result =await hotelsCollection.deleteOne(query);
-//     res.send(result);
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result =await blogsCollection.deleteOne(query);
+    res.send(result);
    
-// })
+})
 
 
 
