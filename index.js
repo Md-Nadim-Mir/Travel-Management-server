@@ -283,13 +283,13 @@ app.delete('/hotels/:id',async(req,res)=>{
 
 
     // <---------------------- Blog : GET Method ---------------------->
-    // app.get('/blogs',async(req,res)=>{
+    app.get('/blogs',async(req,res)=>{
        
-    //   const cursor  =  blogsCollection.find();
-    //   const  result = await cursor.toArray();
-    //   res.send(result);
+      const cursor  =  blogsCollection.find();
+      const  result = await cursor.toArray();
+      res.send(result);
    
-    //  })
+     })
 
 
 //  <--------------------  Single Blog : get method  -------------------->
