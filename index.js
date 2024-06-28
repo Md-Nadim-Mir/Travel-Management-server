@@ -219,7 +219,7 @@ app.get('/hotels/:id',async (req,res)=>{
 
   const id= req.params.id;
   const query = {_id : new ObjectId(id)};
-  const result = await placesCollection.findOne(query);
+  const result = await hotelsCollection.findOne(query);
   res.send(result);
 
  })
