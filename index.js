@@ -316,33 +316,43 @@ app.post('/packages',async(req,res)=>{
  })
 
 // <------------------- Packages : UPDATE method ------------>
-app.put('/packages/:id',async(req,res)=>{
+// app.put('/packages/:id',async(req,res)=>{
 
-  const id =req.params.id;
-  const package = req.body;
-  const filter = {_id: new ObjectId(id)};
-  const option = {upsert : true};
-  const updatePackages = {
-    $set:{
+//   const id =req.params.id;
+//   const package = req.body;
+//   const filter = {_id: new ObjectId(id)};
+//   const option = {upsert : true};
+//   const updatePackages = {
+//     $set:{
+
+//         placeName:package.placeName,
+//         placeImage:package.placeImage,
+//         placeLocation:package.placeLocation,
+//         placeDescription:package.placeDescription,
+//         hotelName:package.hotelName,
+//         hotelImage:package.hotelImage,
+//         hotelLocation:package.hotelLocation,
+//         hotelDescription:package.hotelDescription,
+//         postedDate:package.postedDate
       
-    }
-  }
-  const result = await packagesCollection.updateOne(filter,updatePackages,option);
-  res.send(result);
+//     }
+//   }
+//   const result = await packagesCollection.updateOne(filter,updatePackages,option);
+//   res.send(result);
  
-})
+// })
 
 
 
 //  <----------- Packages : DElETE method>
-app.delete('/blogs/:id',async(req,res)=>{
+// app.delete('/packages/:id',async(req,res)=>{
      
-    const id = req.params.id;
-    const query = {_id: new ObjectId(id)};
-    const result =await blogsCollection.deleteOne(query);
-    res.send(result);
+//     const id = req.params.id;
+//     const query = {_id: new ObjectId(id)};
+//     const result =await packagesCollection.deleteOne(query);
+//     res.send(result);
    
-})
+// })
 
 
 
