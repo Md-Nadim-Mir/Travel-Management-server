@@ -284,13 +284,13 @@ app.delete('/hotels/:id',async(req,res)=>{
 
 
     // <---------------------- Packages : GET Method ---------------------->
-    // app.get('/packages',async(req,res)=>{
+     app.get('/packages',async(req,res)=>{
        
-    //   const cursor  =  packagesCollection.find();
-    //   const  result = await cursor.toArray();
-    //   res.send(result);
+      const cursor  =  packagesCollection.find();
+      const  result = await cursor.toArray();
+      res.send(result);
    
-    //  })
+     })
 
 
 //  <--------------------  Single Packages : get method  -------------------->
@@ -309,11 +309,11 @@ app.delete('/hotels/:id',async(req,res)=>{
 app.post('/packages',async(req,res)=>{
 
      const package = req.body;
-     console.log(blog);
+     console.log(package);
      const result = await packagesCollection.insertOne(package);
      res.send(result);
    
- })
+ }) 
 
 // <------------------- Packages : UPDATE method ------------>
 // app.put('/packages/:id',async(req,res)=>{
