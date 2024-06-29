@@ -345,14 +345,14 @@ app.post('/packages',async(req,res)=>{
 
 
 //  <----------- Packages : DElETE method>
-// app.delete('/packages/:id',async(req,res)=>{
+app.delete('/packages/:id',async(req,res)=>{
      
-//     const id = req.params.id;
-//     const query = {_id: new ObjectId(id)};
-//     const result =await packagesCollection.deleteOne(query);
-//     res.send(result);
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result =await packagesCollection.deleteOne(query);
+    res.send(result);
    
-// })
+})
 
 
 
