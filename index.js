@@ -39,6 +39,7 @@ async function run() {
     const usersCollection = client.db('travel-management').collection('users');
     const placesCollection=client.db('travel-management').collection('places');
     const hotelsCollection=client.db('travel-management').collection('hotels');
+    const packagesCollection=client.db('travel-management').collection('packages');
     const blogsCollection=client.db('travel-management').collection('blogs');
 
 
@@ -273,6 +274,79 @@ app.delete('/hotels/:id',async(req,res)=>{
 
 // <----------------- Hotels Database end -------------------- > 
 
+
+
+
+
+
+
+// <----------------------- Packages Database Start -------------------------->
+
+
+    // <---------------------- Packages : GET Method ---------------------->
+    // app.get('/packages',async(req,res)=>{
+       
+    //   const cursor  =  packagesCollection.find();
+    //   const  result = await cursor.toArray();
+    //   res.send(result);
+   
+    //  })
+
+
+//  <--------------------  Single Packages : get method  -------------------->
+
+//  app.get('/packages/:id',async (req,res)=>{
+
+//   const id= req.params.id;
+//   const query = {_id : new ObjectId(id)};
+//   const result = await packagesCollection.findOne(query);
+//   res.send(result);
+
+//  })
+
+
+//  <---------- Packages : POST Method ----------->
+app.post('/packages',async(req,res)=>{
+
+     const package = req.body;
+     console.log(blog);
+     const result = await packagesCollection.insertOne(package);
+     res.send(result);
+   
+ })
+
+// <------------------- Packages : UPDATE method ------------>
+app.put('/packages/:id',async(req,res)=>{
+
+  const id =req.params.id;
+  const package = req.body;
+  const filter = {_id: new ObjectId(id)};
+  const option = {upsert : true};
+  const updatePackages = {
+    $set:{
+      
+    }
+  }
+  const result = await packagesCollection.updateOne(filter,updatePackages,option);
+  res.send(result);
+ 
+})
+
+
+
+//  <----------- Packages : DElETE method>
+app.delete('/blogs/:id',async(req,res)=>{
+     
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result =await blogsCollection.deleteOne(query);
+    res.send(result);
+   
+})
+
+
+
+// <----------------- Packages Database end -------------------- > 
 
 
 
