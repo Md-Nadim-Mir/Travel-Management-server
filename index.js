@@ -480,26 +480,6 @@ app.post('/bookings',async(req,res)=>{
 
 
 
-// <------------------- Bookings : UPDATE method ------------>
-app.put('/blogs/:id',async(req,res)=>{
-
-  const id =req.params.id;
-  const blog = req.body;
-  const filter = {_id: new ObjectId(id)};
-  const option = {upsert : true};
-  const updateBlog = {
-    $set:{
-      name : blog.name,
-      image : blog.image,
-      writer: blog.writer,
-      description : blog.description,
-      date : blog.date
-    }
-  }
-  const result = await blogsCollection.updateOne(filter,updateBlog,option);
-  res.send(result);
- 
-})
 
 // <--------------------- Booking Update Method Create ---------- >
 app.put('/bookings/:id',async(req,res)=>{
@@ -513,19 +493,30 @@ app.put('/bookings/:id',async(req,res)=>{
          
       $set: {
 
-          placeName:placeName,
-          placeImage:placeImage,
-          price:price,
-          hotelName:hotelName,
-          hotelImage:hotelImage,
-          hotelLocation:hotelLocation,
-          date:date,
-          condition:condition
+          placeName:booking.placeName,
+          placeImage:booking.placeImage,
+          price:booking.price,
+          hotelName:booking.hotelName,
+          hotelImage:booking.hotelImage,
+          hotelLocation:booking.hotelLocation,
+          date:booking.date,
+          condition:booking.condition
 
           }
     }
 
     const result = await bookingsCollection.updateOne(filter,updateBooking,option);
+    res.send(result);
+
+})
+
+
+// <------------  Bookings : DELETE method -------------->
+app.delete('/bookings/:id',async(req,res)=>{
+
+    const id = req.params.id;
+    const query = {_id : new ObjectId(id)};
+    const result = await  bookingsCollection.deleteOne(query);
     res.send(result);
 
 })
