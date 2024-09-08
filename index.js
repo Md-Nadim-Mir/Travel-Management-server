@@ -467,15 +467,6 @@ app.get('/bookings/:id',async(req,res)=>{
 })
 
 
-//  <---------- Blogs : POST Method ----------->
-// app.post('/blogs',async(req,res)=>{
-
-//   const blog = req.body;
-//   console.log(blog);
-//   const result = await blogsCollection.insertOne(blog);
-//   res.send(result);
-
-// })
 
 //  <--------------  Bookings : POST Method -------------->
 app.post('/bookings',async(req,res)=>{
@@ -484,6 +475,58 @@ app.post('/bookings',async(req,res)=>{
   console.log(booking);
   const result= await bookingsCollection.insertOne(booking);
   res.send(result);
+
+})
+
+
+
+// <------------------- Bookings : UPDATE method ------------>
+app.put('/blogs/:id',async(req,res)=>{
+
+  const id =req.params.id;
+  const blog = req.body;
+  const filter = {_id: new ObjectId(id)};
+  const option = {upsert : true};
+  const updateBlog = {
+    $set:{
+      name : blog.name,
+      image : blog.image,
+      writer: blog.writer,
+      description : blog.description,
+      date : blog.date
+    }
+  }
+  const result = await blogsCollection.updateOne(filter,updateBlog,option);
+  res.send(result);
+ 
+})
+
+// <--------------------- Booking Update Method Create ---------- >
+app.put('/bookings/:id',async(req,res)=>{
+
+    const id = req.params.id;
+    const booking = req.body;
+    const filter = {_id: new ObjectId(id)};
+    const option = {upsert:true};
+   
+    const updateBooking={
+         
+      $set: {
+
+          placeName:placeName,
+          placeImage:placeImage,
+          price:price,
+          hotelName:hotelName,
+          hotelImage:hotelImage,
+          hotelLocation:hotelLocation,
+          date:date,
+          condition:condition
+
+          }
+    }
+
+    const result = await bookingsCollection.updateOne(filter,updateBooking,option);
+    res.send(result);
 
 })
 
