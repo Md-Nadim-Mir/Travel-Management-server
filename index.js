@@ -41,6 +41,7 @@ async function run() {
     const hotelsCollection=client.db('travel-management').collection('hotels');
     const packagesCollection=client.db('travel-management').collection('packages');
     const blogsCollection=client.db('travel-management').collection('blogs');
+    const bookingsCollection = client.db('travel-management').collection('bookings');
 
 
 
@@ -438,6 +439,38 @@ app.delete('/blogs/:id',async(req,res)=>{
 
 
 
+
+
+// <---------------------  Bookings Database Start --------------- >
+
+
+ // <-------------------  Bookings : Get Method ------------------- >
+ app.get('/bookings',async(req,res)=>{
+  
+    const cursor = bookingsCollection.find();
+    const result = await cursor.toArray();
+    res.send(result);
+
+ })
+
+
+
+
+// <----------  ---------- Single Blog : Get Method ------------>
+app.get('/bookings/:id',async(req,res)=>{
+
+    const id =req.params.id;
+    const query = {_id:new ObjectId(id)};
+    const result= await bookingsCollection.findOne(query);
+    res.send(result);
+
+})
+
+
+
+
+
+// <---------------------  Bookings Database end --------------- >
 
 
 
