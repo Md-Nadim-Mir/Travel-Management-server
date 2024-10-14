@@ -3,10 +3,13 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const { default: axios } = require("axios");
+const { status } = require("express/lib/response");
 
 // middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded());
 
 // travel-management
 // qT0vDfIUOcRzksKH
@@ -28,9 +31,8 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-
-    const usersCollection = client.db("travel-management").collection("users");
-    const placesCollection = client
+     const usersCollection = client.db("travel-management").collection("users");
+      const placesCollection = client
       .db("travel-management")
       .collection("places");
     const hotelsCollection = client
@@ -43,6 +45,13 @@ async function run() {
     const bookingsCollection = client
       .db("travel-management")
       .collection("bookings");
+
+    
+      //  ssl commerce
+
+      const paymentPackagesCollection = client.db("travel-management").collection("paymentPackages");
+
+
 
     // <-----------   Users Management ------------------->
 
@@ -415,10 +424,163 @@ async function run() {
 
 
 
-    //  <------------------- Create SSL Commerce  ---------------------->
+    //  <------------------- Create SSL Commerce packages  ---------------------->
+
+
+    // all data get
+    app.get("/bookings-packages", async (req, res) => {
+      const cursor = paymentPackagesCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    }); 
+
+
+     // <----------  ---------- Single packges Bookings : Get Method ------------>
+     app.get("/bookings-packages/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await paymentPackagesCollection.findOne(query);
+      res.send(result);
+    });
+
+
+    // <------------  Bookings : DELETE method -------------->
+    app.delete("/bookings-packages/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await paymentPackagesCollection.deleteOne(query);
+      res.send(result);
+    });
+
+
+    // post method
     app.post("/create-paymet",async(req,res)=>{
          
+         const info=req.body.info;
+         console.log(info);
+
+         const trxId= new ObjectId().toString();
+
+         const initiateData = {
+
+          store_id:"adnan67082091a8475",
+          store_passwd:"adnan67082091a8475@ssl",
+          total_amount:1000,
+          currency:"EUR",
+          tran_id:trxId,
+          success_url:"http://localhost:3000/success-payment",
+          fail_url:"http://localhost:3000/fail",
+          cancel_url:"http://localhost:3000/cancel",
+          cus_name:"Customer Name",
+          cus_email:"cust@yahoo.com",
+          cus_add1:"Dhaka",
+          cus_add2:"Dhaka",
+          cus_city:"Dhaka",
+          cus_state:"Dhaka",
+          cus_postcode:1000,
+          cus_country:"Bangladesh",
+          cus_phone:"01711111111",
+          cus_fax:"01711111111",
+          shipping_method : "NO",
+          product_name:"laptop",
+          product_category:"laptop",
+          product_profile:"general",
+          multi_card_name:"mastercard,visacard,amexcard",
+          value_a:"ref001_A",
+          value_b:"ref002_B",
+          value_c:"ref003_C",
+          value_d:"ref004_D"
+            
+         };
+
+        
+         const response= await axios({
+          
+             
+             method:"POST",
+             url:"https://sandbox.sslcommerz.com/gwprocess/v4/api.php",
+             data:initiateData,
+             headers:{
+                 "Content-Type":"application/x-www-form-urlencoded"
+             }
+             
+         })
+
+         console.log(response);
+
+
+         const saveData = {
+            
+            paymentId : trxId,
+            placeName: info.placeName,
+            placeImage: info.placeImage,
+            price: info.price,
+            hotelName: info.hotelName,
+            hotelImage: info.hotelImage,
+            hotelLocation: info.hotelLocation,
+            date: info.date,
+            email:info.email,
+            condition: info.condition,
+
+         }
+
+         const save = await paymentPackagesCollection.insertOne(saveData);
+
+         if(save){
+          
+          res.send({
+           
+            paymentUrl : response.data.GatewayPageURL,
+            
+
+          });
+
+         }
+         
     })
+
+    //  <----------  Success Payment URL ------>
+    app.post("/success-payment",async(req,res)=>{
+
+       const successData=req.body;
+
+       if(successData.status !== 'VALID'){
+          throw new Error('Unauthorized  payment , Invalid Payment')
+       }
+
+      //  update the database 
+      const query = {
+         paymentId:successData.tran_id,
+      };
+
+      const  update = {
+
+         $set:{
+          condition : "Success"
+         },
+         
+      };
+
+      const updateData =  await paymentPackagesCollection.updateOne(query,update);
+
+       console.log("successData : ",successData);
+       console.log("updateData : ",updateData);
+
+       res.redirect("http://localhost:5173/success");
+     
+        
+    })
+
+   
+    // faill url 
+    app.post("/fail",async(req,res)=>{
+        res.redirect("http://localhost:5173/fail")
+    })
+
+    // cancel url
+    app.post("/cancel",async(req,res)=>{
+      res.redirect("http://localhost:5173/cancel")
+  })
 
     // <---------------------  Bookings Database end --------------- >
 
