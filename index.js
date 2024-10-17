@@ -32,9 +32,9 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
      const usersCollection = client.db("travel-management").collection("users");
-      const placesCollection = client
+      const guidesCollection = client
       .db("travel-management")
-      .collection("places");
+      .collection("guides");
     const hotelsCollection = client
       .db("travel-management")
       .collection("hotels");
@@ -116,57 +116,58 @@ async function run() {
     // <----------------------- Place Database Start -------------------------->
 
     // <---------------------- Places : GET Method ---------------------->
-    app.get("/places", async (req, res) => {
-      const cursor = placesCollection.find();
+    app.get("/guides", async (req, res) => {
+      const cursor = guidesCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
     //  <--------------------  Single Places:get method  -------------------->
 
-    app.get("/places/:id", async (req, res) => {
+    app.get("/guides/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const result = await placesCollection.findOne(query);
+      const result = await guidesCollection.findOne(query);
       res.send(result);
     });
 
     //  <---------- places : POST Method ----------->
-    app.post("/places", async (req, res) => {
+    app.post("/guides", async (req, res) => {
       const place = req.body;
       console.log(place);
-      const result = await placesCollection.insertOne(place);
+      const result = await guidesCollection.insertOne(place);
       res.send(result);
     });
 
     // <------------------- Places : UPDATE method ------------>
-    app.put("/places/:id", async (req, res) => {
+    app.put("/guides/:id", async (req, res) => {
       const id = req.params.id;
       const place = req.body;
       const filter = { _id: new ObjectId(id) };
       const option = { upsert: true };
-      const updatePlace = {
+      const updateGuide = {
         $set: {
           name: place.name,
           image: place.image,
-          location: place.location,
+          experiences: place.experiences,
           description: place.description,
-          date: place.date,
+          cost: place.cost,
         },
       };
-      const result = await placesCollection.updateOne(
+      // name image experiences description cost
+      const result = await guidesCollection.updateOne(
         filter,
-        updatePlace,
+        updateGuide,
         option
       );
       res.send(result);
     });
 
     //  <----------- Places : DElETE method>
-    app.delete("/places/:id", async (req, res) => {
+    app.delete("/guides/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const result = await placesCollection.deleteOne(query);
+      const result = await guidesCollection.deleteOne(query);
       res.send(result);
     });
 
@@ -681,7 +682,7 @@ async function run() {
             hotelName: info.hotelName,
             hotelImage: info.hotelImage,
             hotelLocation: info.hotelLocation,
-            price: info.price,
+            livingCost: info.livingCost,
             date: info.date,
             email:info.email,
             condition: info.condition,
